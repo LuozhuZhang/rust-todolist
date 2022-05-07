@@ -1,8 +1,26 @@
-// // fn declare function, like def in ts/python
-// fn main() {
-//     // while the ! in println! is a macro：https://doc.rust-lang.org/book/ch19-06-macros.html
-//     let action = std::env::args().nth(1).expect("Please specify an action");
-//     let item = std::env::args().nth(2).expect("Please specify an item");
+// library
+use std::collections::HashMap
 
-//     println!("{:?}, {:?}", action, item);
-// }
+// HashMap structure：https://doc.rust-lang.org/std/collections/struct.HashMap.html
+struct Todo {
+    // use rust built in HashMap to store key - val pairs
+    map: HashMap<String, bool>,
+}
+
+impl Todo {
+    fn insert(&mut self, key: String) {
+        // insert a new item into our map.
+        // we pass true as value
+        self.map.insert(key, true);
+    }
+
+    // [rest of the code]
+    fn save(self) -> Result<(), std::io::Error> {
+        let mut content = String::new();
+        for (k, v) in self.map {
+            let record = format!("{}\t{}\n", k, v);
+            content.push_str(&record)
+        }
+        std::fs::write("db.txt", content)
+    }
+}
